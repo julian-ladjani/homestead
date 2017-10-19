@@ -1,5 +1,5 @@
 ---
-ip: "192.168.10.10"
+ip: "192.168.68.10"
 memory: 2048
 cpus: 1
 provider: virtualbox
@@ -8,6 +8,13 @@ authorize: ~/.ssh/id_rsa.pub
 
 keys:
     - ~/.ssh/id_rsa
+
+# zsh is a shell program
+zsh: true
+
+#oh my zsh is a zsh plugin
+ohmyzsh: true
+
 
 folders:
     - map: ~/code
@@ -19,6 +26,10 @@ sites:
 
 databases:
     - homestead
+
+# git:
+#     username: "Git username"
+#     email: "Git email"
 
 # blackfire:
 #     - id: foo

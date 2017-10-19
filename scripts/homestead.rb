@@ -238,6 +238,31 @@ class Homestead
             end
         end
 
+        # Install Zsh If Necessary
+        if settings.has_key?("zsh") && settings["zsh"]
+            config.vm.provision "shell" do |s|
+                s.path = scriptDir + "/install-zsh.sh"
+            end
+        end
+
+        # Install OhMyZsh If Necessary
+        if settings.has_key?("ohmyzsh") && settings["ohmyzsh"]
+            config.vm.provision "shell" do |s|
+                s.path = scriptDir + "/install-ohmyzsh.sh"
+            end
+        end
+
+        # Config git If Necessary
+        if settings.has_key?("git") && settings["git"]
+            config.vm.provision "shell" do |s|
+                s.path = scriptDir + "/config-git.sh"
+                s.args = [
+                    settings["git"]["username"],
+                    settings["git"]["email"],
+                ]
+            end
+        end
+
         # Install MongoDB If Necessary
         if settings.has_key?("mongodb") && settings["mongodb"]
             config.vm.provision "shell" do |s|
