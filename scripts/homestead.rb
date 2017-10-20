@@ -144,7 +144,7 @@ class Homestead
                     mount_opts = []
 
                     if (folder["type"] == "nfs")
-                        mount_opts = folder["mount_options"] ? folder["mount_options"] : ['actimeo=1', 'nolock']
+                        mount_opts = folder["mount_options"] ? folder["mount_options"] : ['nolock,vers=3,udp,noatime,actimeo=1']
                     elsif (folder["type"] == "smb")
                         mount_opts = folder["mount_options"] ? folder["mount_options"] : ['vers=3.02', 'mfsymlinks']
                     end
@@ -154,8 +154,13 @@ class Homestead
 
                     # Double-splat (**) operator only works with symbol keys, so convert
                     options.keys.each{|k| options[k.to_sym] = options.delete(k) }
-
-                    config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, **options
+		    
+		    if (folder["type"] == "rsync")
+		        config.vm.synced_folder folder["map"], folder["to"], type: "rsync",
+    			  rsync__auto: "true"
+		    else                    
+			config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, **options
+		    end
 
                     # Bindfs support to fix shared folder (NFS) permission issue on Mac
                     if Vagrant.has_plugin?("vagrant-bindfs")
